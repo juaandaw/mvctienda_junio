@@ -4,7 +4,7 @@
         <h1 class="text-center">Eliminación de un usuario administrador</h1>
     </div>
     <div class="card-body">
-        <form action="<?= ROOT ?>adminuser/delete/<?= $data['user']->id ?>" method="POST">
+        <form action="<?= ROOT ?>adminuser/destroy/<?= $data['user']->id ?>" method="POST">
             <div class="form-group text-left">
                 <label for="name">Usuario:</label>
                 <input type="text" name="name" class="form-control"
