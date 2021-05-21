@@ -66,4 +66,10 @@ class Session
         $data = $query->fetch(PDO::FETCH_OBJ);
         return ($data->total ?? 0);
     }
+
+    public function Address()
+    {
+        $_SESSION['address'] = true;
+
+    }
 }

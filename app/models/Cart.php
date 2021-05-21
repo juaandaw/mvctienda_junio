@@ -78,6 +78,36 @@ class Cart
         return $query->execute($params);
     }
 
+    public function addresses($dataForm,$user)
+    {
+        $sql = 'INSERT INTO addresses(first_name,last_name_1,last_name_2,
+                      email,address,city,state,zipcode,country,user_id)
+                      VALUES (:first_name,:last_name_1,:last_name_2,
+                      :email,:address,:city,:state,:zipcode,:country,:user_id)';
+        $query = $this->db->prepare($sql);
+        $params = [
+            ':first_name' => $dataForm['first_name'],
+            ':last_name_1' => $dataForm['last_name1'],
+            ':last_name_2' => $dataForm['last_name2'],
+            ':email' => $dataForm['email'],
+            ':address' => $dataForm['address'],
+            ':city' => $dataForm['city'],
+            ':state' => $dataForm['state'],
+            ':zipcode' => $dataForm['zipcode'],
+            ':country' => $dataForm['country'],
+            ':user_id' => $user->id,
+        ];
+        $query->execute($params);
+    }
+
+    public function getAdresses($user_id)
+    {
+        $sql = 'SELECT * FROM addresses WHERE user_id=:user_id order by id desc limit 1';
+        $query = $this->db->prepare($sql);
+        $query->execute([':user_id' => $user_id]);
+        return $query->fetch(PDO::FETCH_OBJ);
+    }
+
     public function closeCart($id, $state)
     {
         $sql = 'UPDATE carts SET state=:state, date=:date WHERE user_id=:user_id AND state=0';

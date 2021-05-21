@@ -13,7 +13,7 @@
         <p>Por favor, compruebe los datos de envío y cambie lo que considere necesario</p>
     </div>
     <div class="card-body">
-        <form action="<?= ROOT ?>cart/paymentmode" method="POST">
+        <form action="<?= ROOT ?>cart/newDirection" method="POST">
             <div class="form-group text-left">
                 <label for="first_name">Nombre:</label>
                 <input type="text" name="first_name" id="first_name" class="form-control"

@@ -73,11 +73,11 @@ class cartController extends Controller
             $user = $session->getUser();
             $data = [
                 'titulo'    => 'Carrito - Datos de envío',
-                'subtitle'  => 'Carrito - Verificar dirección de envío',
+                'subtitle'  => 'Carrito - Detalles dirección de envío',
                 'menu'      => true,
                 'data'      => $user,
             ];
-            $this->view('carts/address', $data);
+            $this->view('carts/show', $data);
         } else {
             $data = [
                 'titulo'    => 'Carrito - Checkout',
@@ -87,10 +87,23 @@ class cartController extends Controller
             $this->view('carts/checkout', $data);
         }
     }
+    public function addresses()
+    {
+        $session = new Session();
+        $user = $session->getUser();
+        $data = [
+            'titulo'    => 'Carrito - Datos de envío',
+            'subtitle'  => 'Carrito - Detalles dirección de envío',
+            'menu'      => true,
+            'data'      => $user,
+        ];
+        $session->Address();
+        $this->view('carts/address', $data);
+    }
+
 
     public function paymentmode()
     {
-        // Procesar los datos del formulario
         $data = [
             'titulo'    => 'Carrito | Forma de pago',
             'subtitle'  => 'checkout | Forma de pago',
@@ -99,26 +112,68 @@ class cartController extends Controller
         $this->view('carts/paymentmode', $data);
     }
 
+    public function newDirection()
+    {
+        $session = new Session();
+        $user = $session->getUser();
+        $first_name = isset($_POST['first_name']) ? $_POST['first_name'] : '';
+        $last_name1 = isset($_POST['last_name_1']) ? $_POST['last_name_1'] : '';
+        $last_name2 = isset($_POST['last_name_2']) ? $_POST['last_name_2'] : '';
+        $email = isset($_POST['email']) ? $_POST['email'] : '';
+        $address = isset($_POST['address']) ? $_POST['address'] : '';
+        $city = isset($_POST['city']) ? $_POST['city'] : '';
+        $state = isset($_POST['state']) ? $_POST['state'] : '';
+        $zipcode = isset($_POST['zipcode']) ? $_POST['zipcode'] : '';
+        $country = isset($_POST['country']) ? $_POST['country'] : '';
+        $dataForm = [
+            'first_name' => $first_name,
+            'last_name1' => $last_name1,
+            'last_name2' => $last_name2,
+            'email' => $email,
+            'address' => $address,
+            'city' => $city,
+            'state' => $state,
+            'zipcode' => $zipcode,
+            'country' => $country,
+        ];
+        $this->model->addresses($dataForm,$user);
+
+        $this->paymentmode();
+    }
+
     public function verify()
     {
         $session = new Session();
         $user = $session->getUser();
         $cart = $this->model->getCart($user->id);
+        $address = $this->model->getAdresses($user->id);
         $payment = $_POST['payment'] ?? '';
-        $data = [
-            'titulo'    => 'Carrito | verificar los datos',
-            'subtitle'    => 'Carrito | verificar los datos',
-            'payment'   => $payment,
-            'user'      => $user,
-            'data'      => $cart,
-            'menu'      => true,
-        ];
+        if(isset($_SESSION['address']) && $_SESSION['address']){
+            $data = [
+                'titulo'    => 'Carrito | verificar los datos',
+                'subtitle'    => 'Carrito | verificar los datos',
+                'payment'   => $payment,
+                'user'      => $address,
+                'data'      => $cart,
+                'menu'      => true,
+            ];
+        } else {
+            $data = [
+                'titulo'    => 'Carrito | verificar los datos',
+                'subtitle'    => 'Carrito | verificar los datos',
+                'payment'   => $payment,
+                'user'      => $user,
+                'data'      => $cart,
+                'menu'      => true,
+            ];
+        }
         $this->view('carts/verify', $data);
     }
 
     public function thanks()
     {
         $session = new Session();
+        unset($_SESSION['address']);
         $user = $session->getUser();
         if ($this->model->closeCart($user->id, 1)) {
             $data = [
