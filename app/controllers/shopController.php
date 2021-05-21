@@ -12,7 +12,6 @@ class shopController extends Controller
     public function index()
     {
         $session = new Session();
-        if ($session->getLogin()) {
             $mostSold = $this->model->getMostSold();
             $news = $this->model->getNews();
             $data = [
@@ -23,10 +22,24 @@ class shopController extends Controller
                 'data'      => $mostSold,
                 'news'      => $news,
             ];
-            $this->view('shop/index', $data);
-        } else {
-            header('location:' . ROOT);
+        if(isset($_SESSION['user'])){
+            $user = $session->getUser();
+            $adminEmail = $this->model->getAdminByEmail($user->email);
+            if( $adminEmail != null && $adminEmail->email == $user->email){
+                $data = [
+                    'titulo'    => 'Bienvenid@ a nuestra tienda',
+                    'menu'      => true,
+                    'adminUser' => true,
+                    'subtitle'  => 'Bienvenid@ a nuestra tienda',
+                    'subtitle2' => 'Artículos nuevos',
+                    'data'      => $mostSold,
+                    'news'      => $news,
+                ];
+            }
         }
+        $this->view('shop/index', $data);
+
+
     }
 
     public function show($id, $back = '')
@@ -37,7 +50,7 @@ class shopController extends Controller
             'titulo'    => 'Detalle del producto',
             'subtitle'  => $product->name,
             'menu'      => true,
-            'admin'     => false,
+            'adminUser'     => true,
             'back'      => $back,
             'errors'    => [],
             'data'      => $product,
@@ -62,9 +75,19 @@ class shopController extends Controller
                 'menu'      => true,
                 'active'    => 'whoami',
             ];
+            if(isset($_SESSION['user'])){
+                $user = $session->getUser();
+                $adminEmail = $this->model->getAdminByEmail($user->email);
+                if( $adminEmail != null && $adminEmail->email == $user->email){
+                    $data = [
+                        'titulo'    => 'Quienes somos',
+                        'menu'      => true,
+                        'adminUser' => true,
+                        'active'    => 'whoami',
+                    ];
+                }
+            }
             $this->view('shop/whoami', $data);
-        } else {
-            header('location:' . ROOT);
         }
     }
 
@@ -129,16 +152,24 @@ class shopController extends Controller
         } else {
             $session = new Session();
 
-            if ($session->getLogin()) {
                 $data = [
                     'titulo' => 'Contacta con nosotros',
                     'menu'   => true,
                     'active' => 'contact',
                 ];
+            if(isset($_SESSION['user'])){
+                $user = $session->getUser();
+                $adminEmail = $this->model->getAdminByEmail($user->email);
+                if( $adminEmail != null && $adminEmail->email == $user->email){
+                    $data = [
+                        'titulo' => 'Contacta con nosotros',
+                        'menu'   => true,
+                        'adminUser' => true,
+                        'active' => 'contact',
+                    ];
+                }
+            }
                 $this->view('shop/contact', $data);
-            } else {
-                header('location:' . ROOT);
             }
         }
-    }
 }

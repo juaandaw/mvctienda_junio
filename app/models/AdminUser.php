@@ -29,9 +29,27 @@ class AdminUser
                 ':deleted_at' => null,
             ];
             $query = $this->db->prepare($sql);
-            $response = $query->execute($params);
+            $query->execute($params);
+
+            $sql2 = 'INSERT INTO users(first_name,last_name_1,last_name_2,address,city,state,zipcode,country,email,password) 
+                    VALUES (:first_name,:last_name_1,:last_name_2,:address,:city,:state,:zipcode,:country,:email,:password)';
+
+            $params2 = [
+                'first_name' => $data['name'],
+                'last_name_1' => '',
+                'last_name_2' => '',
+                'address' => '',
+                'city' => '',
+                'state' => '',
+                'zipcode' => '',
+                'country' => '',
+                'email' => $data['email'],
+                'password' => $password
+            ];
+            $query2 = $this->db->prepare($sql2);
+
+            return $query2->execute($params2);
         }
-        return $response;
     }
 
     public function existsEmail($email)

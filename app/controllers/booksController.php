@@ -21,9 +21,21 @@ class booksController extends Controller
                 'active'    => 'books',
                 'data'      => $books,
             ];
+            if(isset($_SESSION['user'])){
+                $user = $session->getUser();
+                $adminEmail = $this->model->getAdminByEmail($user->email);
+                if( $adminEmail != null && $adminEmail->email == $user->email){
+                    $data = [
+                        'titulo'    => 'Libros',
+                        'subtitle'  => 'Libros',
+                        'menu'      => true,
+                        'adminUser' => true,
+                        'active'    => 'books',
+                        'data'      => $books,
+                    ];
+                }
+            }
             $this->view('books/index', $data);
-        } else {
-            header('location:'. ROOT);
         }
     }
 }

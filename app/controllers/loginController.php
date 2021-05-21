@@ -11,7 +11,6 @@ class loginController extends Controller
 
     public function index()
     {
-        var_dump($_COOKIE['mvctienda']);
         if (isset($_COOKIE['mvctienda'])) {
 
             $value = explode('//', $_COOKIE['mvctienda']);

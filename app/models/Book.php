@@ -16,4 +16,11 @@ class Book
         $query->execute();
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
+    public function getAdminByEmail($email)
+    {
+        $sql = 'SELECT * FROM admins WHERE email=:email';
+        $query = $this->db->prepare($sql);
+        $query->execute([':email' => $email]);
+        return $query->fetch(PDO::FETCH_OBJ);
+    }
 }

@@ -21,9 +21,21 @@ class coursesController extends Controller
                 'active'    => 'courses',
                 'data'      => $courses,
             ];
+            if(isset($_SESSION['user'])){
+                $user = $session->getUser();
+                $adminEmail = $this->model->getAdminByEmail($user->email);
+                if( $adminEmail != null && $adminEmail->email == $user->email){
+                    $data = [
+                        'titulo'    => 'Cursos en línea',
+                        'subtitle'  => 'Cursos',
+                        'menu'      => true,
+                        'adminUser' => true,
+                        'active'    => 'courses',
+                        'data'      => $courses,
+                    ];
+                }
+            }
             $this->view('courses/index', $data);
-        } else {
-            header('location:'. ROOT);
         }
     }
 }

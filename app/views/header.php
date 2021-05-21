@@ -79,6 +79,13 @@
                 </li>
             </ul>
         <?php endif; ?>
+        <?php if(isset($data['adminUser']) && $data['adminUser']) : ?>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item">
+                    <a href="<?=ROOT ?>adminshop" class="nav-link">Panel Administrador</a>
+                </li>
+            </ul>
+        <?php endif; ?>
     </div>
 </nav>
 <div class="container-fluid">

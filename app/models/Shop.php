@@ -47,4 +47,11 @@ class Shop
         $subject = 'Mensaje del usuario ' . $name;
         return mail('info@mvctienda.local', $subject, $msg, $headers);
     }
+    public function getAdminByEmail($email)
+    {
+        $sql = 'SELECT * FROM admins WHERE email=:email';
+        $query = $this->db->prepare($sql);
+        $query->execute([':email' => $email]);
+        return $query->fetch(PDO::FETCH_OBJ);
+    }
 }
