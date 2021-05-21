@@ -1,6 +1,6 @@
 <?php
 
-class LoginController extends Controller
+class loginController extends Controller
 {
     private $model;
 
@@ -11,6 +11,7 @@ class LoginController extends Controller
 
     public function index()
     {
+        var_dump($_COOKIE['mvctienda']);
         if (isset($_COOKIE['mvctienda'])) {
 
             $value = explode('//', $_COOKIE['mvctienda']);
@@ -294,13 +295,13 @@ class LoginController extends Controller
 
             $errors = $this->model->verifyUser($user, $password);
 
-            $value = $user . '//' . $password;
+            $value = $user . '//' . hash_hmac('sha512',$password,ENCRIPTKEY) ;
             if ($remember == 'on') {
                 $date = time() + (60 * 60 * 24 * 7);
             } else {
                 $date = time() - 1;
             }
-            setcookie('mvctienda', $value, $date);
+            setcookie('mvctienda', $value, $date, ROOT);
 
             $dataForm = [
                 'user'  => $user,

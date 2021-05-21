@@ -1,6 +1,6 @@
 <?php
 
-class SearchController extends Controller
+class searchController extends Controller
 {
     private $model;
 

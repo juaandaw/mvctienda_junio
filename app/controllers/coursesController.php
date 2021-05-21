@@ -1,6 +1,6 @@
 <?php
 
-class CoursesController extends Controller
+class coursesController extends Controller
 {
     private $model;
 

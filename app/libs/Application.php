@@ -15,11 +15,11 @@ Class Application
         $this->separarURL();
 
         if ( ! $this->url_controller ) {
-            require_once '../app/controllers/LoginController.php';
-            $page = new LoginController();
+            require_once '../app/controllers/loginController.php';
+            $page = new loginController();
             $page->index();
-        } elseif (file_exists('../app/controllers/' . ucfirst($this->url_controller) . 'Controller.php')) {
-            $controller = ucfirst($this->url_controller) . 'Controller';
+        } elseif (file_exists('../app/controllers/' . ($this->url_controller) . 'Controller.php')) {
+            $controller = ($this->url_controller) . 'Controller';
             require_once ('../app/controllers/' . $controller . '.php');
             $this->url_controller = new $controller;
             if (method_exists($this->url_controller, $this->url_action) &&
@@ -37,8 +37,8 @@ Class Application
                 }
             }
         } else {
-            require_once '../app/controllers/LoginController.php';
-            $page = new LoginController();
+            require_once '../app/controllers/loginController.php';
+            $page = new loginController();
             $page->index();
         }
     }

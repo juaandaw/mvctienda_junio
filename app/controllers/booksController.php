@@ -1,6 +1,6 @@
 <?php
 
-class BooksController extends Controller
+class booksController extends Controller
 {
     private $model;
 

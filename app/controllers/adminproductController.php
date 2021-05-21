@@ -1,6 +1,6 @@
 <?php
 
-class AdminProductController extends Controller
+class adminproductController extends Controller
 {
     private $model;
 
