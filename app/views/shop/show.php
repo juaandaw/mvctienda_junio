@@ -22,6 +22,12 @@
 <?php endif ?>
 <a href="<?= ROOT . ((isset($data['user_id'])) ? 'cart/addproduct/' . $data['data']->id .'/'. $data['user_id'] : '') ?>" class="btn btn-info">Comprar</a>
 <a href="<?= ROOT . ((empty($data['back'])) ? 'shop' : $data['back'] ) ?>" class="btn btn-success">
-    Volver al listado de productos
+    <?php if($data['back'] == 'courses'): ?>
+        Volver al listado de cursos
+    <?php elseif($data['back'] == 'books'): ?>
+        Volver al listado de libros
+    <?php elseif(empty($data['back'])): ?>
+        Volver al listado de productos
+    <?php endif; ?>
 </a>
 <?php include_once (VIEWS.'footer.php')?>
