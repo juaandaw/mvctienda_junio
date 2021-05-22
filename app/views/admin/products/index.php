@@ -19,7 +19,10 @@
                     <td class="text-center"><?= $product->id ?></td>
                     <td class="text-center"><?= $data['type'][$product->type - 1]->description ?></td>
                     <td class="text-center"><?= $product->name ?></td>
-                    <td class="text-center"><?= html_entity_decode($product->description) ?></td>
+                    <?php if(strlen($product->description)> 40): ?>
+                        <td class="text-center"><?= html_entity_decode(substr($product->description, 0, 40)). '...' ?></td>
+                    <?php elseif(strlen($product->description)<40) : ?>
+                    <?php endif;?>
                     <td><a href="<?= ROOT ?>adminproduct/update/<?= $product->id ?>" class="btn btn-info">Modificar</a></td>
                     <td><a href="<?= ROOT ?>adminproduct/delete/<?= $product->id ?>" class="btn btn-danger">Borrar</a></td>
                 </tr>
