@@ -25,7 +25,7 @@ class loginController extends Controller
 
         $data = [
             'titulo' => 'Login',
-            'menu'   => false,
+            'menu'   => true,
             'data'   => $dataForm,
         ];
         $this->view('login', $data);

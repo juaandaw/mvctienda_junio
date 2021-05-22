@@ -46,17 +46,30 @@ class shopController extends Controller
     {
         $session = new Session();
         $product = $this->model->getProductById($id);
-        $data = [
-            'titulo'    => 'Detalle del producto',
-            'subtitle'  => $product->name,
-            'menu'      => true,
-            'adminUser'     => true,
-            'back'      => $back,
-            'errors'    => [],
-            'data'      => $product,
-            'user_id'   => $session->getUserId(),
-        ];
-        $this->view('shop/show', $data);
+        if($session->getLogin()){
+            $data = [
+                'titulo'    => 'Detalle del producto',
+                'subtitle'  => $product->name,
+                'menu'      => true,
+                'admin'     => false,
+                'back'      => $back,
+                'errors'    => [],
+                'data'      => $product,
+                'user_id'   => $session->getUserId(),
+            ];
+            $this->view('shop/show', $data);
+        } else {
+            $data = [
+                'titulo'    => 'Detalle del producto',
+                'subtitle'  => $product->name,
+                'menu'      => true,
+                'admin'     => false,
+                'back'      => $back,
+                'errors'    => [],
+                'data'      => $product,
+            ];
+            $this->view('shop/show', $data);
+        }
     }
 
     public function logout()
@@ -69,7 +82,6 @@ class shopController extends Controller
     public function whoami()
     {
         $session = new Session();
-        if ($session->getLogin()) {
             $data = [
                 'titulo'    => 'Quienes somos',
                 'menu'      => true,
@@ -88,7 +100,7 @@ class shopController extends Controller
                 }
             }
             $this->view('shop/whoami', $data);
-        }
+
     }
 
     public function contact()

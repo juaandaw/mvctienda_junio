@@ -56,9 +56,19 @@
                         <button type="submit" class="btn btn-light"><i class="fas fa-search"></i></button>
                     </form>
                 </li>
+                <?php if(isset($_SESSION['user'])) : ?>
                 <li class="nav-item">
                     <a href="<?= ROOT.'shop/logout' ?>" class="nav-link">Salir</a>
                 </li>
+                <?php endif; ?>
+                <?php if (! isset($_SESSION['user'])) : ?>
+                    <li class="nav-item">
+                        <a href="<?=ROOT. 'login/index' ?>" class="nav-link">Log-In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?=ROOT.'login/registro' ?>" class="nav-link">Registro</a>
+                    </li>
+                <?php endif; ?>
             </ul>
         <?php endif; ?>
         <?php if (isset($data['admin']) && $data['admin']): ?>

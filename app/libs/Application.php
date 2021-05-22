@@ -15,8 +15,8 @@ Class Application
         $this->separarURL();
 
         if ( ! $this->url_controller ) {
-            require_once '../app/controllers/loginController.php';
-            $page = new loginController();
+            require_once '../app/controllers/shopController.php';
+            $page = new shopController();
             $page->index();
         } elseif (file_exists('../app/controllers/' . ($this->url_controller) . 'Controller.php')) {
             $controller = ($this->url_controller) . 'Controller';
@@ -37,8 +37,8 @@ Class Application
                 }
             }
         } else {
-            require_once '../app/controllers/loginController.php';
-            $page = new loginController();
+            require_once '../app/controllers/shopController.php';
+            $page = new shopController();
             $page->index();
         }
     }
