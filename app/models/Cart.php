@@ -109,6 +109,22 @@ class Cart
         return $query->fetch(PDO::FETCH_OBJ);
     }
 
+    public function getAllAdresses($user_id)
+    {
+        $sql = 'SELECT * FROM addresses WHERE user_id=:user_id';
+        $query = $this->db->prepare($sql);
+        $query->execute([':user_id' => $user_id]);
+        return $query->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function getAdressByID($id)
+    {
+        $sql = 'SELECT * FROM addresses WHERE id=:id';
+        $query = $this->db->prepare($sql);
+        $query->execute([':id' => $id]);
+        return $query->fetch(PDO::FETCH_OBJ);
+    }
+
     public function closeCart($id, $state)
     {
         $sql = 'UPDATE carts SET state=:state, date=:date WHERE user_id=:user_id AND state=0';

@@ -20,7 +20,7 @@
     <h4>Resumen:</h4>
     <?= html_entity_decode($data['data']->description) ?>
 <?php endif ?>
-<a href="<?= ROOT . ((isset($data['user_id'])) ? 'cart/addproduct/' . $data['data']->id .'/'. $data['user_id'] : '') ?>" class="btn btn-info">Comprar</a>
+<a href="<?= ROOT . ((isset($data['user_id'])) ? 'cart/addproduct/' . $data['data']->id .'/'. $data['user_id'] : 'login/index') ?>" class="btn btn-info">Comprar</a>
 <a href="<?= ROOT . ((empty($data['back'])) ? 'shop' : $data['back'] ) ?>" class="btn btn-success">
     <?php if($data['back'] == 'courses'): ?>
         Volver al listado de cursos

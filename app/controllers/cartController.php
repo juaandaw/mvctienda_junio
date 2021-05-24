@@ -69,14 +69,23 @@ class cartController extends Controller
     public function checkout()
     {
         $session = new Session();
+        unset($_SESSION['address']);
         if ( $session->getLogin()) {
             $user = $session->getUser();
+            $addresses = $this->model->getAllAdresses($user->id);
+
             $data = [
                 'titulo'    => 'Carrito - Datos de envío',
                 'subtitle'  => 'Carrito - Detalles dirección de envío',
                 'menu'      => true,
+                'addresses' => $addresses,
                 'data'      => $user,
             ];
+            foreach ($addresses as $address) {
+                $addressID[] = $address->id;
+
+            }
+            $_SESSION['addressID'] = $addressID;
             $this->view('carts/show', $data);
         } else {
             $data = [
@@ -97,13 +106,20 @@ class cartController extends Controller
             'menu'      => true,
             'data'      => $user,
         ];
-        $session->Address();
         $this->view('carts/address', $data);
     }
 
 
     public function paymentmode()
     {
+        $session = new Session();
+            if(isset($_POST)){
+                foreach ($_POST as $id){
+                    $addressID = $id;
+                    $_SESSION['addressID'] = $addressID;
+                }
+        }
+
         $data = [
             'titulo'    => 'Carrito | Forma de pago',
             'subtitle'  => 'checkout | Forma de pago',
@@ -115,6 +131,8 @@ class cartController extends Controller
     public function newDirection()
     {
         $session = new Session();
+        unset($_SESSION['addressID']);
+        $session->Address();
         $user = $session->getUser();
         $first_name = isset($_POST['first_name']) ? $_POST['first_name'] : '';
         $last_name1 = isset($_POST['last_name_1']) ? $_POST['last_name_1'] : '';
@@ -138,7 +156,12 @@ class cartController extends Controller
         ];
         $this->model->addresses($dataForm,$user);
 
-        $this->paymentmode();
+        $data = [
+            'titulo'    => 'Carrito | Forma de pago',
+            'subtitle'  => 'checkout | Forma de pago',
+            'menu'      => true,
+        ];
+        $this->view('carts/paymentmode', $data);
     }
 
     public function verify()
@@ -148,6 +171,7 @@ class cartController extends Controller
         $cart = $this->model->getCart($user->id);
         $address = $this->model->getAdresses($user->id);
         $payment = $_POST['payment'] ?? '';
+        var_dump($address);
         if(isset($_SESSION['address']) && $_SESSION['address']){
             $data = [
                 'titulo'    => 'Carrito | verificar los datos',
@@ -167,6 +191,17 @@ class cartController extends Controller
                 'menu'      => true,
             ];
         }
+        if(isset($_SESSION['addressID']) && is_string($_SESSION['addressID'])) {
+            $address = $this->model->getAdressByID($_SESSION['addressID']);
+            $data = [
+                'titulo'    => 'Carrito | verificar los datos',
+                'subtitle'    => 'Carrito | verificar los datos',
+                'payment'   => $payment,
+                'user'      => $address,
+                'data'      => $cart,
+                'menu'      => true,
+            ];
+        }
         $this->view('carts/verify', $data);
     }
 
@@ -174,6 +209,7 @@ class cartController extends Controller
     {
         $session = new Session();
         unset($_SESSION['address']);
+        unset($_SESSION['addressID']);
         $user = $session->getUser();
         if ($this->model->closeCart($user->id, 1)) {
             $data = [
